@@ -4,7 +4,7 @@ import Login from "./Components/Login/LoginPage";
 import Challenge from "./Components/ChallengePage";
 import AccountDetails from "./Components/AccountDetails";
 import NavBar from "./Components/NavBar/NavBar";
-import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import RegistrationPage from "./Components/RegistrationPage";
 import ForgetPassword from "./Components/ForgotPassword";
 import ForgetUsername from "./Components/ForgotUsername";
@@ -17,7 +17,7 @@ export default class App extends Component {
       person: { userId: "12345", userName: "", phone: "", email: "" },
       loginMessage: "",
       currentView: "",
-      accountNumber: "213251"
+      accountID: "213251"
     };
   }
 
@@ -36,10 +36,10 @@ export default class App extends Component {
     super.setState(newState);
   };
 
-  sendAccountNumber = accountNumber => {
+  sendAccountNumber = accountID => {
     const newState = { ...this.state };
-    console.log("Entered the update ", accountNumber);
-    newState.accountNumber = accountNumber;
+    console.log("Entered the update ", accountID);
+    newState.accountID = accountID;
     newState.currentView = "transactions";
     super.setState(newState);
   };
@@ -49,9 +49,6 @@ export default class App extends Component {
   };
 
   render() {
-    if (this.state.currentView === "transactions") {
-      return <Redirect to="/transactions" />;
-    }
     return (
       <React.Fragment>
         <NavBar
@@ -61,21 +58,6 @@ export default class App extends Component {
         <div>
           <BrowserRouter>
             <Switch>
-              {/* <Route
-                path="/accountDashboard"
-                component={() => (
-                  // <AccountDashboard
-                  //   person={this.state.person}
-                  //   currentView={this.state.currentView}
-                  // />
-                  <AccountDetails
-                    person={this.state.person}
-                    currentView={this.state.currentView}
-                    sendAccountNumber={this.sendAccountNumber}
-                  />
-                )}
-              /> */}
-
               <Route
                 path="/AccountDetails"
                 component={() => (
@@ -90,7 +72,7 @@ export default class App extends Component {
                 path="/transactions"
                 component={() => (
                   <TransactionDetails
-                    accountNumber={this.state.accountNumber}
+                    accountID={this.state.accountID}
                     currentView={this.state.currentView}
                     sendAccountNumber={this.sendAccountNumber}
                   />

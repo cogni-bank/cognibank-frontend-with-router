@@ -9,30 +9,23 @@ export default class TransactionDetails extends Component {
       startDate: new Date(),
       endDate: new Date(),
       errorMessage: "",
-      accountNumber: this.props.accountNumber,
       transactions: []
     };
   }
-  componentMount() {
-    console.log("account Number in transs ", this.props.accountNumber);
-  }
 
   handlegetTransactionsStartDate = (date, event) => {
-    console.log("in start date ");
     const newState = { ...this.state };
     newState.startDate = date;
     this.setState(newState);
   };
 
   handlegetTransactionsEndate = (date, event) => {
-    console.log("in end date");
     const newState = { ...this.state };
     newState.endDate = date;
     this.setState(newState);
   };
 
   handlegetTransactions = () => {
-    console.log("after transaction----");
     const apiURL =
       "http://localhost:9300/users/accounts/report/" +
       this.props.accountID +
@@ -42,18 +35,13 @@ export default class TransactionDetails extends Component {
       this.formatDate(this.state.endDate);
     console.log(apiURL);
     axiosTransaction.put(`${apiURL}`).then(response => {
-      console.log("trans response ", response.data);
-      console.log("trans response length", response.data.length);
       if (response.data.length === 0) {
         //display message as no data available
-        console.log("empty list");
         const newState = { ...this.state };
         newState.errorMessage = "No data found";
         this.setState(newState);
       } else {
         //generate table
-
-        console.log("generate table");
         const newState = { ...this.state };
         newState.errorMessage = "";
         newState.transactions = response.data;
@@ -63,28 +51,20 @@ export default class TransactionDetails extends Component {
   };
 
   handleDepositBygetAccountNumber = event => {
-    console.log("in handleDepositBygetAccountNumber");
-    console.log("value===> ", this.textInput.value);
     const amount = this.textInput.value;
-    console.log(this.props.accountID);
     let eventName = event.target.name;
-    console.log("eventName ---> ", eventName);
     const apiURL =
       "http://localhost:9300/users/accounts/getAccountNumberById/" +
       this.props.accountID;
     console.log(apiURL);
     axiosTransaction.put(`${apiURL}`).then(res => {
-      console.log("response from account id -> ", res.data);
       const newState = JSON.parse(JSON.stringify(this.state));
       newState.accountNumber = res.data;
       this.setState(newState);
-      console.log("account number from state ", this.state.accountNumber);
     });
     if (eventName === "deposit") {
-      console.log("in deposit");
       this.doADeposit(amount);
     } else if (eventName === "withdraw") {
-      console.log("in withdraw");
       this.withdraw(amount);
     }
   };
@@ -97,13 +77,10 @@ export default class TransactionDetails extends Component {
       withdrawAmount;
 
     console.log(apiURL);
-    axiosTransaction.put(`${apiURL}`).then(response => {
-      console.log("response from withdraw-> ", response);
-    });
+    axiosTransaction.put(`${apiURL}`).then(response => {});
   };
 
   doADeposit = depositAmount => {
-    console.log("in handleDeposit");
     const apiURL =
       "http://localhost:9300/users/accounts/deposit/" +
       this.state.accountNumber +
@@ -111,9 +88,7 @@ export default class TransactionDetails extends Component {
       depositAmount;
 
     console.log(apiURL);
-    axiosTransaction.put(`${apiURL}`).then(response => {
-      console.log("response from deposit-> ", response);
-    });
+    axiosTransaction.put(`${apiURL}`).then(response => {});
   };
 
   formatDate(date) {
@@ -156,14 +131,10 @@ export default class TransactionDetails extends Component {
         </table>
       );
     }
-    // const transationList = response.data.map(transaction => {
-    //   transaction.ID;
-    // });
 
     return (
       <div>
         {/* VIEW TRANSACTION FORM STARTS HERE */}
-        {/* <form id="formTransaction"> */}
         <DatePicker
           id="startDate"
           name="startDate"
@@ -192,7 +163,6 @@ export default class TransactionDetails extends Component {
         >
           View Transactions
         </button>
-        {/* </form> */}
         <div>
           <input
             type="number"

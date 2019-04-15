@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import "../style/Account.css";
-//import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 /*Will be called once success Otp validation   */
 export default class AccountDetails extends Component {
@@ -35,20 +35,9 @@ export default class AccountDetails extends Component {
   };
 
   handleChangeWithAccountNumber = event => {
-    console.log("acoount selected --> ", event.target.value);
-
-    // let accountID = event.target.value;
-    // let accountObj = this.state.accountsList.filter(a => a.id === accountID);
-    // const newState = { ...this.state };
-    // newState.accountNumber = accountObj.accountNumber;
-    // this.setState(newState);
-    // console.log(
-    //   "account Number select from state --> " + this.state.accountNumber
-    // );
-
-    let accountNo = event.target.value;
+    let accountID = event.target.value;
     const newState = { ...this.state };
-    newState.accountNumber = accountNo;
+    newState.accountID = accountID;
     this.setState(newState);
   };
 
@@ -78,19 +67,10 @@ export default class AccountDetails extends Component {
         this.setState(newState);
       });
   };
-
-  // goToTransaction = () => {
-  //   const newState = { ...this.state };
-  //   newState.currentView = "transactions";
-  //   super.setState(newState);
-  //   console.log("in acc -> ", this.state.accountNumber);
-  //   this.props.sendAccountNumber(this.state.accountNumber);
-  // };
-
   render() {
-    // if (this.state.currentView === "transactions") {
-    //   return <Redirect to="/transactions" />;
-    // }
+    if (this.state.currentView === "transactions") {
+      return <Redirect to="/transactions" />;
+    }
     let tableWithAccounts = (
       <table className="table table-striped">
         <thead>
@@ -110,7 +90,7 @@ export default class AccountDetails extends Component {
                   type="radio"
                   name="accountRadioGrp"
                   onChange={this.handleChangeWithAccountNumber}
-                  value={account.accountNumber}
+                  value={account.id}
                 />
               </td>
               <td>{account.accountNumber}</td>
@@ -125,7 +105,7 @@ export default class AccountDetails extends Component {
 
     return (
       <div id="accountDetails">
-        {/* Welcome {this.props.person.userName} */}
+        Welcome {this.props.person.userName}
         <div>
           <label>AccountType</label>
         </div>
@@ -186,9 +166,8 @@ export default class AccountDetails extends Component {
           id="goToTransaction"
           name="goToTransaction"
           onClick={() => {
-            this.props.sendAccountNumber(this.state.accountNumber);
+            this.props.sendAccountNumber(this.state.accountID);
           }}
-          //  onClick={this.goToTransaction}
         >
           View Transactions
         </button>
