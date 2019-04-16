@@ -3,12 +3,13 @@ import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import "../style/Account.css";
 import { Redirect } from "react-router-dom";
+import { properties } from "../properties";
 
 /*Will be called once success Otp validation   */
 export default class AccountDetails extends Component {
   state = {
     selectedOption: "Checking",
-    accountID: " ",
+    accountID: "",
     message: "",
     accountsList: [],
     accountNumber: "",
@@ -16,14 +17,14 @@ export default class AccountDetails extends Component {
   };
 
   componentDidMount() {
-    console.log("exampleComponent mounted");
     const apiUrl =
-      "http://localhost:9300/users/accounts/accountsList/" +
+      properties.accountManagementURL +
+      "accountsList/" +
       this.props.person.userId;
     axios.put(`${apiUrl}`).then(response => {
-      console.log(response.data);
+      console.log(response.data.accounts);
       const newState = { ...this.state };
-      newState.accountsList = response.data;
+      newState.accountsList = response.data.accounts;
       this.setState(newState);
     });
   }
@@ -44,7 +45,8 @@ export default class AccountDetails extends Component {
   createAccount = () => {
     let userId = this.props.person.userId;
     const apiUrl =
-      "http://localhost:9300/users/accounts/create/" +
+      properties.accountManagementURL +
+      "create/" +
       userId +
       "/" +
       this.state.selectedOption;
@@ -59,6 +61,7 @@ export default class AccountDetails extends Component {
           " account has been created successfully";
         this.setState(newState);
         console.log("accountID ", this.state.accountID);
+        this.componentDidMount();
       })
       .catch(error => {
         console.log(error);
@@ -67,13 +70,19 @@ export default class AccountDetails extends Component {
         this.setState(newState);
       });
   };
+
+  maskAccountNumber = string => {
+    string.substr(2, 6);
+    console.log("sub--- ", string.substr(2, 6));
+  };
+
   render() {
     if (this.state.currentView === "transactions") {
       return <Redirect to="/transactions" />;
     }
     let tableWithAccounts = (
-      <table className="table table-striped">
-        <thead>
+      <table id="listOfAccountsTable" className="table table-hover table-fixed">
+        <thead className="thead-light">
           <tr>
             <th>Select account</th>
             <th>Account Number</th>
@@ -105,10 +114,7 @@ export default class AccountDetails extends Component {
 
     return (
       <div id="accountDetails">
-        Welcome {this.props.person.userName}
-        <div>
-          <label>AccountType</label>
-        </div>
+        <label>Select an account to be created: </label>&nbsp;&nbsp;
         <label>
           <input
             type="radio"
@@ -168,6 +174,12 @@ export default class AccountDetails extends Component {
           onClick={() => {
             this.props.sendAccountNumber(this.state.accountID);
           }}
+          className="btn btn-primary"
+          // style={{
+          //   display: this.state.accountID !== " " ? "block" : "none"
+          // }}
+
+          disabled={!this.state.accountID}
         >
           View Transactions
         </button>

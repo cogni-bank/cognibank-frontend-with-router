@@ -9,15 +9,16 @@ import RegistrationPage from "./Components/RegistrationPage";
 import ForgetPassword from "./Components/ForgotPassword";
 import ForgetUsername from "./Components/ForgotUsername";
 import TransactionDetails from "./Components/TransactionDetails";
+import FundTransfer from "./Components/FundTransfer";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: { userId: "12345", userName: "", phone: "", email: "" },
+      person: { userId: "12345", userName: "Jon Doe", phone: "", email: "" },
       loginMessage: "",
       currentView: "",
-      accountID: "213251"
+      accountID: ""
     };
   }
 
@@ -117,6 +118,10 @@ export default class App extends Component {
                 exact
                 path="/ChallengeView"
                 component={() => <Challenge person={this.state.person} />}
+              />
+              <Route
+                path="/fundTransfer"
+                component={() => <FundTransfer person={this.state.person} />}
               />
             </Switch>
           </BrowserRouter>

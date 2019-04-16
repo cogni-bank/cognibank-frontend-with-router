@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import axiosTransaction from "axios";
+import { properties } from "../properties";
 
 export default class TransactionDetails extends Component {
   constructor(props) {
@@ -11,6 +12,10 @@ export default class TransactionDetails extends Component {
       errorMessage: "",
       transactions: []
     };
+  }
+
+  componentDidMount() {
+    console.log("intransaction ---- " + this.props.accountID);
   }
 
   handlegetTransactionsStartDate = (date, event) => {
@@ -27,7 +32,8 @@ export default class TransactionDetails extends Component {
 
   handlegetTransactions = () => {
     const apiURL =
-      "http://localhost:9300/users/accounts/report/" +
+      properties.accountManagementURL +
+      "report/" +
       this.props.accountID +
       "/" +
       this.formatDate(this.state.startDate) +
@@ -54,10 +60,12 @@ export default class TransactionDetails extends Component {
     const amount = this.textInput.value;
     let eventName = event.target.name;
     const apiURL =
-      "http://localhost:9300/users/accounts/getAccountNumberById/" +
+      properties.accountManagementURL +
+      "getAccountNumberById/" +
       this.props.accountID;
     console.log(apiURL);
     axiosTransaction.put(`${apiURL}`).then(res => {
+      console.log(res);
       const newState = JSON.parse(JSON.stringify(this.state));
       newState.accountNumber = res.data;
       this.setState(newState);
@@ -71,7 +79,8 @@ export default class TransactionDetails extends Component {
 
   withdraw = withdrawAmount => {
     const apiURL =
-      "http://localhost:9300/users/accounts/withdraw/" +
+      properties.accountManagementURL +
+      "withdraw/" +
       this.state.accountNumber +
       "/" +
       withdrawAmount;
@@ -82,7 +91,8 @@ export default class TransactionDetails extends Component {
 
   doADeposit = depositAmount => {
     const apiURL =
-      "http://localhost:9300/users/accounts/deposit/" +
+      properties.accountManagementURL +
+      "deposit/" +
       this.state.accountNumber +
       "/" +
       depositAmount;

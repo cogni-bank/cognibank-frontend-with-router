@@ -19,6 +19,9 @@ class NavBar extends Component {
                 <Nav.Link href="/transactions" to="/transactions">
                   Transactions
                 </Nav.Link>
+                <Nav.Link href="/fundTransfer" to="/fundTransfer">
+                  Fund Transfer
+                </Nav.Link>
               </Nav>
               <Nav>
                 <Nav.Link href="/login">Login</Nav.Link>
