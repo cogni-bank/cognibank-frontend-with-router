@@ -69,19 +69,20 @@ export default class TransactionDetails extends Component {
       const newState = JSON.parse(JSON.stringify(this.state));
       newState.accountNumber = res.data;
       this.setState(newState);
+
+      if (eventName === "deposit") {
+        this.doADeposit(amount, res.data);
+      } else if (eventName === "withdraw") {
+        this.withdraw(amount, res.data);
+      }
     });
-    if (eventName === "deposit") {
-      this.doADeposit(amount);
-    } else if (eventName === "withdraw") {
-      this.withdraw(amount);
-    }
   };
 
-  withdraw = withdrawAmount => {
+  withdraw = (withdrawAmount, accountNo) => {
     const apiURL =
       properties.accountManagementURL +
       "withdraw/" +
-      this.state.accountNumber +
+      accountNo +
       "/" +
       withdrawAmount;
 
@@ -89,11 +90,11 @@ export default class TransactionDetails extends Component {
     axiosTransaction.put(`${apiURL}`).then(response => {});
   };
 
-  doADeposit = depositAmount => {
+  doADeposit = (depositAmount, accountNo) => {
     const apiURL =
       properties.accountManagementURL +
       "deposit/" +
-      this.state.accountNumber +
+      accountNo +
       "/" +
       depositAmount;
 
@@ -144,7 +145,6 @@ export default class TransactionDetails extends Component {
 
     return (
       <div>
-        {/* VIEW TRANSACTION FORM STARTS HERE */}
         <DatePicker
           id="startDate"
           name="startDate"
@@ -165,7 +165,6 @@ export default class TransactionDetails extends Component {
           minDate={this.state.startDate}
           maxDate={new Date()}
         />
-
         <button
           id="viewTransaction"
           name="viewTransaction"

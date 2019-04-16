@@ -54,13 +54,11 @@ export default class AccountDetails extends Component {
       .put(`${apiUrl}`)
       .then(response => {
         const newState = JSON.parse(JSON.stringify(this.state));
-        newState.accountID = response.data;
         newState.message =
           "Your " +
           this.state.selectedOption +
           " account has been created successfully";
         this.setState(newState);
-        console.log("accountID ", this.state.accountID);
         this.componentDidMount();
       })
       .catch(error => {

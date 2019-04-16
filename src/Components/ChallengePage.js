@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import UserOptionForm from "./UserOptionForm";
 import OtpForm from "./OtpForm";
 import LogOut from "./LogOut";
+import { Redirect } from "react-router-dom";
 
 /*Challenge page has UserOPtionForm and  OtpForm as child components */
 export default class Challenge extends Component {
@@ -78,6 +79,13 @@ export default class Challenge extends Component {
         // to do
         // add routing
         console.log("AccountView method.");
+
+        //HERE
+        //  this.props.switchView("loginView");
+        //  this.props.switchViewFromNavBar("AccountDetails");
+        const newState = { ...this.state };
+        newState.challengeCurrentView = "AccountDetails";
+        this.setState(newState);
       })
       .catch(error => {
         console.error("Error", error);
@@ -86,6 +94,9 @@ export default class Challenge extends Component {
   };
 
   render() {
+    if (this.state.challengeCurrentView === "AccountDetails") {
+      return <Redirect to="/AccountDetails" />;
+    }
     let tmpView = <UserOptionForm sendChallenge={this.sendChallenge} />;
     if (this.state.challengeCurrentView === "userOptionForm") {
       tmpView = (

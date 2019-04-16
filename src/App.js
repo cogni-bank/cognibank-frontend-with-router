@@ -15,7 +15,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: { userId: "12345", userName: "Jon Doe", phone: "", email: "" },
+      person: { userId: "", userName: "", phone: "", email: "" },
       loginMessage: "",
       currentView: "",
       accountID: ""
@@ -117,7 +117,12 @@ export default class App extends Component {
               <Route
                 exact
                 path="/ChallengeView"
-                component={() => <Challenge person={this.state.person} />}
+                component={() => (
+                  <Challenge
+                    person={this.state.person}
+                    switchViewFromNavBar={this.switchViewFromNavBar}
+                  />
+                )}
               />
               <Route
                 path="/fundTransfer"

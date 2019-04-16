@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { properties } from "../properties";
 
 class FundTransfer extends Component {
   state = {
     accountNumberList: [],
     originalAccNo: "",
-    destinationAccNo: ""
+    destinationAccNo: "",
+    message: ""
   };
 
   componentDidMount() {
     console.log("exampleComponent mounted");
     const apiUrl =
-      "http://localhost:9300/users/accounts/accountsList/" +
+      properties.accountManagementURL +
+      "accountsList/" +
       this.props.person.userId;
     axios.put(`${apiUrl}`).then(response => {
       console.log(response.data);
@@ -25,7 +28,8 @@ class FundTransfer extends Component {
     const amt = this.textInput.value;
     console.log("Amount ", amt);
     const apiURL =
-      "http://localhost:9300/users/accounts/transfer/" +
+      properties.accountManagementURL +
+      "transfer/" +
       this.state.originalAccNo +
       "/" +
       this.state.destinationAccNo +
@@ -34,9 +38,22 @@ class FundTransfer extends Component {
 
     console.log("apiURL---- ", apiURL);
 
-    axios.put(`${apiURL}`).then(response => {
-      console.log("in transfer resp status", response.data, response.status);
-    });
+    axios
+      .put(`${apiURL}`)
+      .then(response => {
+        console.log("in transfer resp status", response.data, response.status);
+        const newState = { ...this.state };
+        if (response.status === 200) {
+          newState.message = "Transfer successfull";
+        }
+        this.setState(newState);
+      })
+      .catch(error => {
+        console.log(error);
+        const newState = { ...this.state };
+        newState.message = "Oops! Something went wrong. Please, try again.";
+        this.setState(newState);
+      });
   };
 
   handleFromAccoutno = e => {
@@ -58,6 +75,25 @@ class FundTransfer extends Component {
     return (
       <div>
         {/* <form onSubmit={this.handleTransferAmount}> */}
+        <div
+          id="messageDiv"
+          style={{
+            display: this.state.message !== "" ? "block" : "none",
+            width: "40%",
+            marginLeft: "29%",
+            marginTop: "2%"
+          }}
+        >
+          <p
+            className={
+              this.state.message === "Transfer successfull"
+                ? "alert alert-success"
+                : "alert alert-danger"
+            }
+          >
+            {this.state.message}
+          </p>
+        </div>
         <label>Amount to be transferred: </label> &nbsp;&nbsp;
         <input
           name="transferAmount"
