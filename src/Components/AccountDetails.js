@@ -77,6 +77,8 @@ export default class AccountDetails extends Component {
   render() {
     if (this.state.currentView === "transactions") {
       return <Redirect to="/transactions" />;
+    } else if (this.state.currentView === "fundTransfer") {
+      return <Redirect to="/fundTransfer" />;
     }
     let tableWithAccounts = (
       <table id="listOfAccountsTable" className="table table-hover table-fixed">
@@ -180,6 +182,22 @@ export default class AccountDetails extends Component {
           disabled={!this.state.accountID}
         >
           View Transactions
+        </button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button
+          id="goToFundTransfer"
+          name="goToFundTransfer"
+          onClick={() => {
+            this.props.goToFundTransfer();
+          }}
+          className="btn btn-primary"
+          // style={{
+          //   display: this.state.accountID !== " " ? "block" : "none"
+          // }}
+
+          disabled={!this.state.accountID}
+        >
+          Fund Transfer
         </button>
       </div>
     );

@@ -49,6 +49,13 @@ export default class App extends Component {
     super.setState({ loginMessage: message });
   };
 
+  goToFundTransfer = () => {
+    const newState = { ...this.state };
+    console.log("fundTransfer ");
+    newState.currentView = "fundTransfer";
+    super.setState(newState);
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -66,6 +73,7 @@ export default class App extends Component {
                     person={this.state.person}
                     currentView={this.state.currentView}
                     sendAccountNumber={this.sendAccountNumber}
+                    goToFundTransfer={this.goToFundTransfer}
                   />
                 )}
               />

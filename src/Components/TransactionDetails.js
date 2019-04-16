@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import axiosTransaction from "axios";
 import { properties } from "../properties";
+import "../style/Transaction.css";
 
 export default class TransactionDetails extends Component {
   constructor(props) {
@@ -117,7 +118,11 @@ export default class TransactionDetails extends Component {
     let table = "";
     if (this.state.errorMessage === "") {
       table = (
-        <table className="table table-striped">
+        <table
+          className="table table-hover table-fixed"
+          style={{ marginTop: "1%" }}
+          id="listOfTransaction"
+        >
           <thead>
             <tr>
               <th>Transaction Date</th>
@@ -144,7 +149,7 @@ export default class TransactionDetails extends Component {
     }
 
     return (
-      <div>
+      <div style={{ marginTop: "3%" }}>
         <DatePicker
           id="startDate"
           name="startDate"
@@ -154,6 +159,7 @@ export default class TransactionDetails extends Component {
           onChange={this.handlegetTransactionsStartDate}
           maxDate={new Date()}
         />
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <DatePicker
           id="endDate"
           name="endDate"
@@ -165,31 +171,37 @@ export default class TransactionDetails extends Component {
           minDate={this.state.startDate}
           maxDate={new Date()}
         />
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <button
           id="viewTransaction"
           name="viewTransaction"
           onClick={this.handlegetTransactions}
+          className="btn btn-primary"
         >
           View Transactions
         </button>
-        <div>
+        <div style={{ marginTop: "1%" }}>
           <input
             type="number"
             id="amount"
             name="amount"
             ref={input => (this.textInput = input)}
           />
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <button
             id="deposit"
             name="deposit"
             onClick={this.handleDepositBygetAccountNumber}
+            className="btn btn-primary"
           >
             Deposit
           </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <button
             id="withdraw"
             name="withdraw"
             onClick={this.handleDepositBygetAccountNumber}
+            className="btn btn-primary"
           >
             Withdraw
           </button>

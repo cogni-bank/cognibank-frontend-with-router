@@ -44,7 +44,7 @@ class FundTransfer extends Component {
         console.log("in transfer resp status", response.data, response.status);
         const newState = { ...this.state };
         if (response.status === 200) {
-          newState.message = "Transfer successfull";
+          newState.message = "Transfer successful";
         }
         this.setState(newState);
       })
@@ -73,8 +73,9 @@ class FundTransfer extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: "3%" }}>
         {/* <form onSubmit={this.handleTransferAmount}> */}
+        <h5>Fund Transfer</h5>
         <div
           id="messageDiv"
           style={{
@@ -86,7 +87,7 @@ class FundTransfer extends Component {
         >
           <p
             className={
-              this.state.message === "Transfer successfull"
+              this.state.message === "Transfer successful"
                 ? "alert alert-success"
                 : "alert alert-danger"
             }
@@ -94,6 +95,8 @@ class FundTransfer extends Component {
             {this.state.message}
           </p>
         </div>
+        <br />
+        <br />
         <label>Amount to be transferred: </label> &nbsp;&nbsp;
         <input
           name="transferAmount"
@@ -102,6 +105,7 @@ class FundTransfer extends Component {
           ref={input => (this.textInput = input)}
           required
         />
+        <br />
         <br />
         Select an account for transfer: &nbsp;&nbsp;
         <select name="originalAccNo" onChange={this.handleFromAccoutno}>
@@ -113,6 +117,7 @@ class FundTransfer extends Component {
           ))}
         </select>
         <br />
+        <br />
         Select a Recipient: &nbsp;&nbsp;
         <select name="destinationAccNo" onChange={this.handleFromAccoutno}>
           <option value="select">Select an Account</option>
@@ -121,10 +126,12 @@ class FundTransfer extends Component {
           ))}
         </select>
         <br />
+        <br />
         <button
           type="submit"
           disabled={!(this.state.originalAccNo && this.state.destinationAccNo)}
           onClick={this.handleTransferAmount}
+          className="btn btn-primary"
         >
           Transfer
         </button>
